@@ -12,7 +12,7 @@ export const getAllExampleEntitiesHandler = (dal: ExampleEntityDal) =>
 
 export const getExampleEntityById = (dal: ExampleEntityDal) => 
     async (req: Request, res: Response) => {
-        const id = req.query.id!.toString();
+        const id = req.params.id!.toString();
 
         const exampleEntity = await dal.getById(id);
 
@@ -29,9 +29,9 @@ export const addExampleEntity = (dal: ExampleEntityDal) =>
 
 export const deleteExampleEntityById = (dal: ExampleEntityDal) => 
     async (req: Request, res: Response) => {
-        const id = req.query.id!.toString();
+        const id = req.params.id!.toString();
 
         await dal.deleteExampleEntity(id);
 
-        res.status(StatusCodes.OK);
+        res.sendStatus(StatusCodes.OK);
     };

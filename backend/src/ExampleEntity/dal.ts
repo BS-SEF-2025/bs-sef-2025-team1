@@ -1,6 +1,6 @@
 import { CollectionReference, Firestore } from "firebase-admin/firestore";
 import { ExampleEntity } from "./schema.js";
-import { EntityNotFoundError } from "../utils/errors/types.js";
+import { EntityNotFoundError } from "../utils/errors/client.js";
 
 export const collectionName = 'exampleEntities';
 
@@ -14,7 +14,10 @@ export class ExampleEntityDal {
     getAllExampleEntities = async () => {
         const res = await this.collection.get();
 
-        return res.docs;
+        return res.docs.map(doc => ({
+            id: doc.id, 
+            ...doc.data()
+        }));
     }
 
     getById = async (id: string) => {
