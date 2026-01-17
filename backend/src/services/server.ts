@@ -35,7 +35,8 @@ export class Server implements StoppableService {
     private registerRoutes = (firestore: Firestore) => {
         this.app.use('/courses', createCourseRouter(new CourseDal(firestore)));
         this.app.use('/entities', createExampleEntityRouter(new ExampleEntityDal(firestore)));
-        this.app.get('/health', (_: Request, res: Response) => { res.sendStatus(StatusCodes.OK); });
+        this.app.get('/health', (_: Request, res: Response) => { res.sendStatus(StatusCodes.OK); }); 
+        this.app.get('/secret', (_: Request, res: Response) => { res.redirect('https://youtu.be/dQw4w9WgXcQ')});
     }
 
     start = () => {
