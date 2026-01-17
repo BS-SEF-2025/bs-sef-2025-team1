@@ -1,16 +1,11 @@
-import { testFirestoreClient } from "../../services/__tests__/firestore";
-import { CourseDal } from "../dal";
+import { deleteCollection, insertMany, testFirestore } from "../../services/__tests__/firestore";
+import { addTestPrefix } from "../../utils/firestore.utils";
+import { courseCollectionName, CourseDal } from "../dal";
 import { courses } from "./mock";
 
-describe("test", () => {
-  test("unit1", () => {
-    expect(1).toBe(1);
-  });
-});
-
 describe("course dal", () => {
-
-  const courseDal = new CourseDal(testFirestoreClient.getFirebase());
+    const testCollectionName = addTestPrefix(courseCollectionName);
+  const courseDal = new CourseDal(testFirestore, testCollectionName);
 
   describe("getAllCourses", () => {
     test("empty collection", async () => {
@@ -20,7 +15,10 @@ describe("course dal", () => {
     });
 
     test("non empty collection", async () => {
+      await insertMany(testCollectionName, courses);
       const res = await courseDal.getAllCourses();
+
+      await deleteCollection(testCollectionName);
 
       expect(res).toEqual(courses);
     });
