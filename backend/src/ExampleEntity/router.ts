@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { ExampleEntityDal } from "./dal.js";
-import * as handlers from './handlers.js';
-import { httpLogger } from "../utils/middlewares.js";
+import { ExampleEntityDal } from "./dal";
+import * as handlers from './handlers';
+import { httpLogger } from "../utils/middlewares";
 
 export const createExampleEntityRouter = (dal: ExampleEntityDal) => {
     const router = Router();

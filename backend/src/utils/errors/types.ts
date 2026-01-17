@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { Service } from "../../services/types.js";
+import { Service } from "../../services/types";
 
 export class ServiceError extends Error {
     constructor(service: Service, msg: string) {

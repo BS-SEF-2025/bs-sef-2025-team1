@@ -1,7 +1,7 @@
 import z from "zod";
-import { Server, ServerConfigSchema } from "./server.js";
-import { StoppableService } from "./types.js";
-import { FirestoreClient, FirestoreConfigSchema } from "./firestore.js";
+import { Server, ServerConfigSchema } from "./server";
+import { StoppableService } from "./types";
+import { FirestoreClient, FirestoreConfigSchema } from "./firestore";
 
 export const SystemConfigSchema = z.object({
     server: ServerConfigSchema,

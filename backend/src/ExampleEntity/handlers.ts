@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { ExampleEntityDal } from "./dal.js";
-import { validateExampleEntity } from "./schema.js";
+import { ExampleEntityDal } from "./dal";
+import { validateExampleEntity } from "./schema";
 import { StatusCodes } from "http-status-codes";
 
 export const getAllExampleEntitiesHandler = (dal: ExampleEntityDal) =>
