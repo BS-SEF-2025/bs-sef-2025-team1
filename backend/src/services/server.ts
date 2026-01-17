@@ -7,6 +7,8 @@ import { StatusCodes } from "http-status-codes";
 import { createExampleEntityRouter } from "../ExampleEntity/router";
 import { Firestore } from "firebase-admin/firestore";
 import { ExampleEntityDal } from "../ExampleEntity/dal";
+import { createCourseRouter } from "../Course/router";
+import { CourseDal } from "../Course/dal";
 
 export const ServerConfigSchema = z.object({
     PORT: z.coerce.number().positive(),
@@ -28,8 +30,9 @@ export class Server implements StoppableService {
         this.app.use(json());
     }
 
-    private registerRoutes = (firebase: Firestore) => {
-        this.app.use('/entities', createExampleEntityRouter(new ExampleEntityDal(firebase)));
+    private registerRoutes = (firestore: Firestore) => {
+        this.app.use('/courses', createCourseRouter(new CourseDal(firestore)));
+        this.app.use('/entities', createExampleEntityRouter(new ExampleEntityDal(firestore)));
         this.app.get('/health', (_: Request, res: Response) => { res.sendStatus(StatusCodes.OK); });
     }
 
