@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import logger from "./logger.js";
-import { HttpError } from "./errors/types.js";
+import logger from "./logger";
+import { HttpError } from "./errors/types";
 import { StatusCodes } from "http-status-codes";
 
 type HandlerFunction = (req: Request, res: Response) => void | Promise<void>;

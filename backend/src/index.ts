@@ -1,5 +1,5 @@
-import { createSystemConfig } from "./config.js";
-import { System } from "./services/System.js";
+import { createSystemConfig } from "./config";
+import { System } from "./services/System";
 
 const main = () => {
     const config = createSystemConfig(process.env); //process.env as unknown as SystemConfig;

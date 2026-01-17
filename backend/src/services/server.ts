@@ -1,12 +1,12 @@
 import z from "zod";
-import type { StoppableService } from "./types.js";
+import type { StoppableService } from "./types";
 import express, {Express, json, Request, Response} from 'express';
 import http from 'http';
-import logger from "../utils/logger.js";
+import logger from "../utils/logger";
 import { StatusCodes } from "http-status-codes";
-import { createExampleEntityRouter } from "../ExampleEntity/router.js";
+import { createExampleEntityRouter } from "../ExampleEntity/router";
 import { Firestore } from "firebase-admin/firestore";
-import { ExampleEntityDal } from "../ExampleEntity/dal.js";
+import { ExampleEntityDal } from "../ExampleEntity/dal";
 
 export const ServerConfigSchema = z.object({
     PORT: z.coerce.number().positive(),

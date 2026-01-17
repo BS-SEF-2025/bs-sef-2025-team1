@@ -1,8 +1,8 @@
 import z from "zod";
-import { ServerConfigSchema } from "./services/server.js";
-import { SystemConfig } from "./services/System.js";
-import { createValidate } from "./utils/validation.js";
-import { FirestoreConfigSchema } from "./services/firestore.js";
+import { ServerConfigSchema } from "./services/server";
+import { SystemConfig } from "./services/System";
+import { createValidate } from "./utils/validation";
+import { FirestoreConfigSchema } from "./services/firestore";
 
 export const SystemEnvSchema = z.object({
     ...ServerConfigSchema.shape,
