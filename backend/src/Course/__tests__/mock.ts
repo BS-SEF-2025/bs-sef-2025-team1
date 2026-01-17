@@ -1,12 +1,15 @@
+import { EntityWithId } from "../../utils/types";
 import { Course } from "../schema";
 
-export const courses: Course[] = [
+export const courses: EntityWithId<Course>[] = [
     {
         'name': 'linear algebra',
-        'courseId': 'c001'
+        'courseId': 'c001',
+        id: '1'
     },
     {
         'name': 'OOP',
-        'courseId': 'c002'
+        'courseId': 'c002',
+        id: '2'
     }
 ];
