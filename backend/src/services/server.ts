@@ -9,6 +9,7 @@ import { Firestore } from "firebase-admin/firestore";
 import { ExampleEntityDal } from "../ExampleEntity/dal";
 import { createCourseRouter } from "../Course/router";
 import { CourseDal } from "../Course/dal";
+import cors from 'cors';
 
 export const ServerConfigSchema = z.object({
     PORT: z.coerce.number().positive(),
@@ -28,6 +29,7 @@ export class Server implements StoppableService {
 
     private registerMiddlewares = () => {
         this.app.use(json());
+        this.app.use(cors())
     }
 
     private registerRoutes = (firestore: Firestore) => {
