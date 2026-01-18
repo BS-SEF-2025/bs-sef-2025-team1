@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { httpLogger } from "../utils/middlewares";
+import { httpLogger } from "../../utils/middlewares";
 import { CourseDal } from "./dal";
 import * as handlers from './handlers';
 

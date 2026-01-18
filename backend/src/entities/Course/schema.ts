@@ -1,5 +1,5 @@
 import z from 'zod';
-import { createValidate } from '../utils/validation';
+import { createValidate } from '../../utils/validation';
 
 export const CourseSchema = z.object({
     name: z.string(),

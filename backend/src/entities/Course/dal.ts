@@ -1,7 +1,7 @@
 import { CollectionReference, Firestore } from "firebase-admin/firestore";
 import { Course } from "./schema";
-import { EntityNotFoundError } from "../utils/errors/client";
-import { isEntityExists } from "../utils/firestore.utils";
+import { EntityNotFoundError } from "../../utils/errors/client";
+import { isEntityExists } from "../../utils/firestore.utils";
 
 export const courseCollectionName = "courses";
 

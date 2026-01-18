@@ -4,11 +4,11 @@ import express, {Express, json, Request, Response} from 'express';
 import http from 'http';
 import logger from "../utils/logger";
 import { StatusCodes } from "http-status-codes";
-import { createExampleEntityRouter } from "../ExampleEntity/router";
+import { createExampleEntityRouter } from "../entities/ExampleEntity/router";
 import { Firestore } from "firebase-admin/firestore";
-import { ExampleEntityDal } from "../ExampleEntity/dal";
-import { createCourseRouter } from "../Course/router";
-import { CourseDal } from "../Course/dal";
+import { ExampleEntityDal } from "../entities/ExampleEntity/dal";
+import { createCourseRouter } from "../entities/Course/router";
+import { CourseDal } from "../entities/Course/dal";
 import cors from 'cors';
 
 export const ServerConfigSchema = z.object({
