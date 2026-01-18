@@ -1,5 +1,4 @@
 import { CollectionReference, Firestore } from "firebase-admin/firestore";
-import { EntityWithId } from "../utils/types";
 import { Course } from "./schema";
 import { EntityNotFoundError } from "../utils/errors/client";
 
@@ -12,22 +11,18 @@ export class CourseDal {
     this.collection = db.collection(collectionName) as CollectionReference<Course>;
   }
 
-  getAllCourses = async (): Promise<EntityWithId<Course>[]> => {
+  getAllCourses = async (): Promise<Course[]> => {
     const res = await this.collection.get();
 
     return res.docs.map((doc) => ({
-      id: doc.id,
       ...doc.data(),
     }));
   };
 
-  addCourse = async (course: Course): Promise<EntityWithId<Course>> => {
-    const res = await this.collection.add(course);
+  addCourse = async (course: Course): Promise<Course> => {
+    await this.collection.add(course);
 
-    return {
-      id: res.id,
-      ...course
-    };
+    return course;
   }
 
   renameCourse = async (id: string, newName: string) => {
