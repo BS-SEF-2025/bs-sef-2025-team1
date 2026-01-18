@@ -3,7 +3,7 @@ import { createValidate } from '../utils/validation';
 
 export const CourseSchema = z.object({
     name: z.string(),
-    courseId: z.string()
+    id: z.string()
 }); 
 
 export type Course = z.infer<typeof CourseSchema>;
