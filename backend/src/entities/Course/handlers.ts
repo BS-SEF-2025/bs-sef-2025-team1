@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import z from "zod";
-import { createValidate } from "../utils/validation";
+import { createValidate } from "../../utils/validation";
 import { CourseDal } from "./dal";
 import { validateCourse } from "./schema";
 

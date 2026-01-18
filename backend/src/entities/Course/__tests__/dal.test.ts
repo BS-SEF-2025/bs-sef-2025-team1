@@ -3,9 +3,9 @@ import {
   deleteCollection,
   insertMany,
   testFirestore,
-} from "../../services/__tests__/firestore";
-import { EntityNotFoundError } from "../../utils/errors/client";
-import { addTestPrefix } from "../../utils/firestore.utils";
+} from "../../../services/__tests__/firestore";
+import { EntityNotFoundError } from "../../../utils/errors/client";
+import { addTestPrefix } from "../../../utils/firestore.utils";
 import { courseCollectionName, CourseDal } from "../dal";
 import { courses } from "./mock";
 
