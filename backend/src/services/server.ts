@@ -4,9 +4,12 @@ import express, {Express, json, Request, Response} from 'express';
 import http from 'http';
 import logger from "../utils/logger";
 import { StatusCodes } from "http-status-codes";
-import { createExampleEntityRouter } from "../ExampleEntity/router";
+import { createExampleEntityRouter } from "../entities/ExampleEntity/router";
 import { Firestore } from "firebase-admin/firestore";
-import { ExampleEntityDal } from "../ExampleEntity/dal";
+import { ExampleEntityDal } from "../entities/ExampleEntity/dal";
+import { createCourseRouter } from "../entities/Course/router";
+import { CourseDal } from "../entities/Course/dal";
+import cors from 'cors';
 
 export const ServerConfigSchema = z.object({
     PORT: z.coerce.number().positive(),
@@ -26,11 +29,14 @@ export class Server implements StoppableService {
 
     private registerMiddlewares = () => {
         this.app.use(json());
+        this.app.use(cors())
     }
 
-    private registerRoutes = (firebase: Firestore) => {
-        this.app.use('/entities', createExampleEntityRouter(new ExampleEntityDal(firebase)));
-        this.app.get('/health', (_: Request, res: Response) => { res.sendStatus(StatusCodes.OK); });
+    private registerRoutes = (firestore: Firestore) => {
+        this.app.use('/courses', createCourseRouter(new CourseDal(firestore)));
+        this.app.use('/entities', createExampleEntityRouter(new ExampleEntityDal(firestore)));
+        this.app.get('/health', (_: Request, res: Response) => { res.sendStatus(StatusCodes.OK); }); 
+        this.app.get('/secret', (_: Request, res: Response) => { res.redirect('https://youtu.be/dQw4w9WgXcQ')});
     }
 
     start = () => {
