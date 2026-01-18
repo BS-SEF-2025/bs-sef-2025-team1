@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
+import { StatusCodes } from "http-status-codes";
+import z from "zod";
+import { createValidate } from "../utils/validation";
 import { CourseDal } from "./dal";
 import { validateCourse } from "./schema";
-import { StatusCodes } from "http-status-codes";
 
 export const getAllCoursesHandler =
   (dal: CourseDal) => async (_: Request, res: Response) => {
@@ -19,12 +21,27 @@ export const addCourseHandler =
     res.status(StatusCodes.CREATED).json(newCourse);
   };
 
+export const renameCourseSchema = z.object<Pick<Request, 'body'>>({
+    body: z.object({
+        name: z.string(),
+    })
+});
+
 export const renameCourseHandler =
   (dal: CourseDal) => async (req: Request, res: Response) => {
-    //TODO
+    const courseId = req.params.id!.toString();
+    const { body:{ name } } = createValidate(renameCourseSchema)(req);
+
+    await dal.renameCourse(courseId, name);
+
+    res.sendStatus(StatusCodes.NO_CONTENT);
   };
 
 export const deleteCourseHandler =
-  (dal: CourseDal) => (req: Request, res: Response) => {
-    //TODO
+  (dal: CourseDal) => async (req: Request, res: Response) => {
+    const id = req.params.id!.toString();
+
+    await dal.deleteCourse(id);
+
+    res.sendStatus(StatusCodes.OK);
   };
