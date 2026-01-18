@@ -1,14 +1,15 @@
 import { CollectionReference, Firestore } from "firebase-admin/firestore";
 import { Course } from "./schema";
 import { EntityNotFoundError } from "../utils/errors/client";
+import { isEntityExists } from "../utils/firestore.utils";
 
 export const courseCollectionName = "courses";
 
 export class CourseDal {
   private collection: CollectionReference<Course>;
 
-  constructor(db: Firestore, collectionName: string = courseCollectionName) {
-    this.collection = db.collection(collectionName) as CollectionReference<Course>;
+  constructor(private db: Firestore, private collectionName: string = courseCollectionName) {
+    this.collection = this.db.collection(this.collectionName) as CollectionReference<Course>;
   }
 
   getAllCourses = async (): Promise<Course[]> => {
@@ -27,11 +28,8 @@ export class CourseDal {
 
   renameCourse = async (id: string, newName: string) => {
     const doc = this.collection.doc(id);
-    const isExists = (await doc.get()).exists;
     
-    if (!isExists) {
-      throw new EntityNotFoundError(id);
-    }
+    await this.assertCourseExists(id);
 
     await doc.update({
       name: newName
@@ -40,12 +38,17 @@ export class CourseDal {
 
   deleteCourse = async (id: string) => {
     const doc = this.collection.doc(id);
-    const isExists = (await doc.get()).exists
     
-    if (!isExists) {
-      throw new EntityNotFoundError(id);
-    }
+    await this.assertCourseExists(id)
 
     await doc.delete();
+  }
+
+  private assertCourseExists = async (id: string) => {
+    const isExists = await isEntityExists(this.db, this.collectionName, id);
+
+    if (!isExists) {
+      throw new EntityNotFoundError(id, 'Course')
+    }
   }
 }

@@ -20,7 +20,7 @@ export class NotFoundError extends ClientError {
 }
 
 export class EntityNotFoundError extends NotFoundError {
-    constructor(id: string) {
-        super(`entity with id '${id}' not found`);
+    constructor(id: string, entityName = 'entity') {
+        super(`${entityName} with id '${id}' not found`);
     }
 }

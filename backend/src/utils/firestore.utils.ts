@@ -1,17 +1,22 @@
 import {
   CollectionReference,
-  WriteBatch,
-  Firestore,
   DocumentData,
+  Firestore,
+  WriteBatch,
 } from "firebase-admin/firestore";
+import { isNil } from "ramda";
+import { EntityWithId } from "./types";
 
 export const createInsertMany = (db: Firestore) => {
-  return async <T extends DocumentData>(collectionName: string, data: T[], idField?: keyof T) => {
+  return async <T extends EntityWithId<DocumentData>>(
+    collectionName: string,
+    data: T[],
+  ) => {
     const collectionRef = db.collection(collectionName);
     const batch = db.batch();
 
     data.forEach((item) => {
-      const docId = idField ? (item[idField] as string | undefined) : undefined;
+      const docId = item.id;
       const docRef = docId ? collectionRef.doc(docId) : collectionRef.doc();
       batch.set(docRef, item);
     });
@@ -33,8 +38,23 @@ export const createDeleteMany = (db: Firestore) => {
   };
 };
 
-export const createDeleteCollection = (db: Firestore) => 
-  (collectionName: string) =>
-  db.recursiveDelete(db.collection(collectionName));
+export const createDeleteCollection =
+  (db: Firestore) => (collectionName: string) =>
+    db.recursiveDelete(db.collection(collectionName));
 
 export const addTestPrefix = (str: string) => `test_${str}`;
+
+export const isEntityExists = (
+  db: Firestore,
+  collectionName: string,
+  entityId?: string,
+) => {
+  const curriedEntityId = async (entityId: string) =>
+    (await db.collection(collectionName).doc(entityId).get()).exists;
+
+  if (isNil(entityId)) {
+    return curriedEntityId;
+  }
+
+  return curriedEntityId(entityId);
+};
