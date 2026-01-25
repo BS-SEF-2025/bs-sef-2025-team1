@@ -32,29 +32,38 @@ describe("course dal", () => {
 
   describe("addCourse", () => {
     test("adds a course and returns it with an id", async () => {
-      const courseToAdd = courses[0];
-      const res = await courseDal.addCourse(courseToAdd!);
+      const courseData = { name: 'Test Course', enrolledStudents: ['student1'] };
+      const res = await courseDal.addCourse(courseData, 'staff1');
 
       expect(res).toEqual({
         id: expect.any(String),
-        ...courseToAdd,
+        name: 'Test Course',
+        enrolledStudents: ['student1'],
+        createdBy: 'staff1',
+        createdAt: expect.any(Date),
+        updatedAt: expect.any(Date),
       });
 
       await deleteCollection(testCollectionName);
     });
 
     test("persists the course in the collection", async () => {
-      const courseToAdd = courses[0];
-      await courseDal.addCourse(courseToAdd!);
+      const courseData = { name: 'Test Course', enrolledStudents: ['student1'] };
+      await courseDal.addCourse(courseData, 'staff1');
       const allCourses = await courseDal.getAllCourses();
 
-      expect(allCourses).toContainEqual(expect.objectContaining(courseToAdd));
+      expect(allCourses).toHaveLength(1);
+      expect(allCourses[0]).toMatchObject({
+        name: 'Test Course',
+        enrolledStudents: ['student1'],
+        createdBy: 'staff1',
+      });
 
       await deleteCollection(testCollectionName);
     });
   });
 
-  describe("renameCourse", () => {
+  describe("updateCourse", () => {
     beforeEach(async () => {
       await insertMany(testCollectionName, courses);
     });
@@ -63,19 +72,19 @@ describe("course dal", () => {
       await deleteCollection(testCollectionName);
     });
 
-    test("renames an existing course", async () => {
+    test("updates an existing course", async () => {
       const targetCourse = courses[0];
       const newName = "New Course Name";
-      await courseDal.renameCourse(targetCourse!.id, newName);
+      await courseDal.updateCourse(targetCourse!.id, { name: newName });
 
-      const updatedCourse = (await courseDal.getAllCourses()).find(propEq(newName, 'name'));
+      const updatedCourse = (await courseDal.getAllCourses()).find(c => c.name === newName);
       
       expect(updatedCourse?.id).toBe(targetCourse?.id);
     });
 
     test("throws if course does not exist", async () => {
       await expect(
-        courseDal.renameCourse("nonexistentId", "Whatever"),
+        courseDal.updateCourse("nonexistentId", { name: "Whatever" }),
       ).rejects.toThrow(EntityNotFoundError);
     });
   });

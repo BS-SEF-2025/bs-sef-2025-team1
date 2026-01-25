@@ -32,20 +32,38 @@ describe("user dal", () => {
 
   describe("addUser", () => {
     test("adds a user and returns it", async () => {
-      const userToAdd = users[0];
-      const res = await userDal.addUser(userToAdd!);
+      const userToAdd = {
+        name: "Jane Smith",
+        email: "jane.smith@example.com",
+        password: "hashedpassword",
+        role: "staff" as const,
+      };
+      const res = await userDal.addUser(userToAdd);
 
-      expect(res).toEqual(userToAdd);
+      expect(res).toMatchObject({
+        name: userToAdd.name,
+        email: userToAdd.email,
+        password: userToAdd.password,
+        role: userToAdd.role,
+      });
+      expect(res.id).toBeDefined();
+      expect(res.createdAt).toBeInstanceOf(Date);
+      expect(res.updatedAt).toBeInstanceOf(Date);
 
       await deleteCollection(testCollectionName);
     });
 
     test("persists the user in the collection", async () => {
-      const userToAdd = users[0];
-      await userDal.addUser(userToAdd!);
+      const userToAdd = {
+        name: "Jane Smith",
+        email: "jane.smith@example.com",
+        password: "hashedpassword",
+        role: "staff" as const,
+      };
+      const addedUser = await userDal.addUser(userToAdd);
       const allUsers = await userDal.getAllUsers();
 
-      expect(allUsers).toContainEqual(userToAdd);
+      expect(allUsers).toContainEqual(addedUser);
 
       await deleteCollection(testCollectionName);
     });

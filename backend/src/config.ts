@@ -17,6 +17,7 @@ export const createSystemConfig = (env: NodeJS.ProcessEnv): SystemConfig => {
     return {
         server: {
             PORT: validated.PORT,
+            JWT_SECRET: validated.JWT_SECRET,
         },
         firestore: {
             SERVICE_ACCOUNT_KEY_PATH: validated.SERVICE_ACCOUNT_KEY_PATH,

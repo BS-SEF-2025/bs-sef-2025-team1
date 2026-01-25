@@ -3,6 +3,7 @@ import {
   DocumentData,
   Firestore,
   WriteBatch,
+  Timestamp,
 } from "firebase-admin/firestore";
 import { isNil } from "ramda";
 import { EntityWithId } from "./types";
@@ -57,4 +58,21 @@ export const isEntityExists = (
   }
 
   return curriedEntityId(entityId);
+};
+
+export const convertTimestampsToDates = (obj: any): any => {
+  if (obj instanceof Timestamp) {
+    return obj.toDate();
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(convertTimestampsToDates);
+  }
+  if (obj && typeof obj === 'object') {
+    const result: any = {};
+    for (const key in obj) {
+      result[key] = convertTimestampsToDates(obj[key]);
+    }
+    return result;
+  }
+  return obj;
 };
