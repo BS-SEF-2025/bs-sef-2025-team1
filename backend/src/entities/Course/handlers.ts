@@ -1,47 +1,65 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import z from "zod";
-import { createValidate } from "../../utils/validation";
 import { CourseDal } from "./dal";
-import { validateCourse } from "./schema";
+import { validateCreateCourse, validateUpdateCourse } from "./schema";
+import { AuthenticatedRequest } from "../../services/auth/middleware";
 
 export const getAllCoursesHandler =
-  (dal: CourseDal) => async (_: Request, res: Response) => {
-    const courses = await dal.getAllCourses();
+  (dal: CourseDal) => async (req: Request, res: Response) => {
+    const user = (req as AuthenticatedRequest).user;
 
-    res.json(courses);
+    let courses;
+    if (user.role === 'staff') {
+      courses = await dal.getCoursesByCreator(user.id);
+    } else {
+      courses = await dal.getCoursesByEnrolledStudent(user.id);
+    }
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      data: courses,
+    });
   };
 
-export const addCourseHandler =
+export const getCourseByIdHandler =
   (dal: CourseDal) => async (req: Request, res: Response) => {
-    const newCourseData = validateCourse(req.body);
+    const id = req.params.id as string;
+    const course = await dal.getCourseById(id);
 
-    const newCourse = await dal.addCourse(newCourseData);
-
-    res.status(StatusCodes.CREATED).json(newCourse);
+    res.status(StatusCodes.OK).json({
+      success: true,
+      data: course,
+    });
   };
 
-export const renameCourseSchema = z.object<Pick<Request, 'body'>>({
-    body: z.object({
-        name: z.string(),
-    })
-});
-
-export const renameCourseHandler =
+export const createCourseHandler =
   (dal: CourseDal) => async (req: Request, res: Response) => {
-    const courseId = req.params.id!.toString();
-    const { body:{ name } } = createValidate(renameCourseSchema)(req);
+    const courseData = validateCreateCourse(req.body);
+    const createdBy = (req as AuthenticatedRequest).user.id;
+    const course = await dal.addCourse(courseData, createdBy);
 
-    await dal.renameCourse(courseId, name);
+    res.status(StatusCodes.CREATED).json({
+      success: true,
+      data: course,
+    });
+  };
 
-    res.sendStatus(StatusCodes.NO_CONTENT);
+export const updateCourseHandler =
+  (dal: CourseDal) => async (req: Request, res: Response) => {
+    const id = req.params.id as string;
+    const updates = validateUpdateCourse(req.body);
+    const course = await dal.updateCourse(id, updates);
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      data: course,
+    });
   };
 
 export const deleteCourseHandler =
   (dal: CourseDal) => async (req: Request, res: Response) => {
-    const id = req.params.id!.toString();
-
+    const id = req.params.id as string;
     await dal.deleteCourse(id);
 
-    res.sendStatus(StatusCodes.OK);
+    res.sendStatus(StatusCodes.NO_CONTENT);
   };

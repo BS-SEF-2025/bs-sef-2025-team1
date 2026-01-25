@@ -2,11 +2,19 @@ import { Course } from "../schema";
 
 export const courses: Course[] = [
     {
-        'name': 'linear algebra',
-        id: '1'
+        id: 'course1',
+        name: 'Linear Algebra',
+        enrolledStudents: ['student1', 'student2'],
+        createdBy: 'staff1',
+        createdAt: new Date('2024-01-01T00:00:00Z'),
+        updatedAt: new Date('2024-01-01T00:00:00Z'),
     },
     {
-        'name': 'OOP',
-        id: '2'
+        id: 'course2',
+        name: 'OOP',
+        enrolledStudents: ['student3'],
+        createdBy: 'staff1',
+        createdAt: new Date('2024-01-01T00:00:00Z'),
+        updatedAt: new Date('2024-01-01T00:00:00Z'),
     }
 ];

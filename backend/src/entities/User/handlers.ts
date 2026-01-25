@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { StatusCodes } from "http-status-codes";
 import { UserDal } from "./dal";
-import { validatePartialUser, validateUser } from "./schema";
+import { validatePartialUser, validateUser, User } from "./schema";
 
 export const getAllUsersHandler =
   (dal: UserDal) => async (_: Request, res: Response) => {
@@ -25,7 +25,7 @@ export const updateUser =
     const id = req.params.id!.toString();
     const updates = validatePartialUser(req.body);
 
-    await dal.updateUser(id, updates);
+    await dal.updateUser(id, updates as Partial<User>);
 
     res.sendStatus(StatusCodes.NO_CONTENT);
   };
