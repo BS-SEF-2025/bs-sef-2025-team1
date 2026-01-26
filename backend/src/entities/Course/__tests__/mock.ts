@@ -1,4 +1,4 @@
-import { Course } from "../schema";
+import { Course } from "../schema.js";
 
 export const courses: Course[] = [
     {

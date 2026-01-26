@@ -1,17 +1,23 @@
 
 import type { User, Course, Assignment, Submission, Group } from '../types';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8888/api';
 
-// ôåğ÷öééú òæø ìá÷ùåú
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
+    const token = localStorage.getItem('authToken');
+    const headers: HeadersInit = {
+        'Content-Type': 'application/json',
+        ...options?.headers,
+    };
+
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
     const response = await fetch(`${API_URL}${endpoint}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            // ëàï úåñéó áòúéã èå÷ï àéîåú (JWT)
-            // 'Authorization': `Bearer ${token}` 
-        },
         ...options,
+        headers,
     });
 
     if (!response.ok) {
@@ -21,30 +27,41 @@ async function request<T>(endpoint: string, options?: RequestInit): Promise<T> {
 }
 
 export const api = {
-    // îùúîùéí
+    // Authentication
+    login: (credentials: { email: string; password: string }) => request<{ user: User; token: string }>('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify(credentials)
+    }),
+    register: (userData: { name: string; email: string; password: string; role: 'staff' | 'student'; groupId?: string }) => request<User>('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify(userData)
+    }),
+    getCurrentUser: () => request<User>('/auth/me'),
+
+    // Users
     getUsers: () => request<User[]>('/users'),
 
-    // ÷åøñéí
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     getCourses: () => request<Course[]>('/courses'),
     createCourse: (course: Partial<Course>) => request<Course>('/courses', {
         method: 'POST',
         body: JSON.stringify(course)
     }),
 
-    // îèìåú
+    // ï¿½ï¿½ï¿½ï¿½ï¿½
     getAssignments: () => request<Assignment[]>('/assignments'),
     createAssignment: (assignment: Partial<Assignment>) => request<Assignment>('/assignments', {
         method: 'POST',
         body: JSON.stringify(assignment)
     }),
 
-    // äâùåú
+    // ï¿½ï¿½ï¿½ï¿½ï¿½
     getSubmissions: () => request<Submission[]>('/submissions'),
     submitAssignment: (submission: Partial<Submission>) => request<Submission>('/submissions', {
         method: 'POST',
         body: JSON.stringify(submission)
     }),
 
-    // ÷áåöåú
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     getGroups: () => request<Group[]>('/groups'),
 };

@@ -1,5 +1,5 @@
 import z from 'zod';
-import { createValidate } from '../../utils/validation';
+import { createValidate } from '../../utils/validation.js';
 
 export const GroupSchema = z.object({
     id: z.string(),

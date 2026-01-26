@@ -1,7 +1,7 @@
 import { CollectionReference, Firestore } from "firebase-admin/firestore";
-import { Assignment, CreateAssignment, UpdateAssignment, Field } from "./schema";
-import { EntityNotFoundError } from "../../utils/errors/client";
-import { isEntityExists } from "../../utils/firestore.utils";
+import { Assignment, CreateAssignment, UpdateAssignment, Field } from "./schema.js";
+import { EntityNotFoundError } from "../../utils/errors/client.js";
+import { isEntityExists } from "../../utils/firestore.utils.js";
 
 export const assignmentCollectionName = "assignments";
 

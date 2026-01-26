@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Assignment, Submission, SubmissionAnswer, Course, Group, User } from '../types';
-import { Send, CheckCircle, Clock, FileText, Eye } from 'lucide-react';
+import { Send, CheckCircle, FileText, Eye } from 'lucide-react';
 
 interface StudentViewProps {
     assignments: Assignment[];
@@ -150,7 +150,7 @@ export function StudentView({
                             }`}
                     >
                         <Eye size={20} />
-                        ביקורות על ה��בוצה שלי ({reviewsAboutMe.length})
+                        ביקורות על הקבוצה שלי ({reviewsAboutMe.length})
                     </button>
                 </div>
             </div>

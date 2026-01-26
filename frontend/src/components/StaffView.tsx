@@ -28,8 +28,7 @@ export function StaffView({
     setCourses,
     groups,
     setGroups,
-    users,
-    currentUser
+    users
 }: StaffViewProps) {
     const [viewMode, setViewMode] = useState<'assignments' | 'courses' | 'groups' | 'summary'>('assignments');
     const [assignmentMode, setAssignmentMode] = useState<'list' | 'create' | 'edit'>('list');
@@ -132,7 +131,6 @@ export function StaffView({
 
     const getUserById = (userId: string) => users.find(u => u.id === userId);
     const getGroupById = (groupId: string) => groups.find(g => g.id === groupId);
-    const getCourseById = (courseId: string) => courses.find(c => c.id === courseId);
 
     // ========== EXPORT TO EXCEL ==========
 
@@ -235,7 +233,6 @@ export function StaffView({
                         <AssignmentsList
                             assignments={assignments}
                             courses={courses}
-                            groups={groups}
                             submissions={submissions}
                             onEdit={startEditAssignment}
                             onDelete={deleteAssignment}
@@ -291,7 +288,6 @@ export function StaffView({
                 <SummaryView
                     assignments={assignments}
                     submissions={submissions}
-                    courses={courses}
                     groups={groups}
                     users={users}
                     selectedAssignment={selectedAssignment}
@@ -307,14 +303,13 @@ export function StaffView({
 interface AssignmentsListProps {
     assignments: Assignment[];
     courses: Course[];
-    groups: Group[];
     submissions: Submission[];
     onEdit: (assignment: Assignment) => void;
     onDelete: (id: string) => void;
     onCreate: () => void;
 }
 
-function AssignmentsList({ assignments, courses, groups, submissions, onEdit, onDelete, onCreate }: AssignmentsListProps) {
+function AssignmentsList({ assignments, courses, submissions, onEdit, onDelete, onCreate }: AssignmentsListProps) {
     const getStats = (assignmentId: string) => {
         const subs = submissions.filter(s => s.assignmentId === assignmentId);
         if (subs.length === 0) return { avg: 0, min: 0, max: 0, count: 0 };
@@ -355,7 +350,6 @@ function AssignmentsList({ assignments, courses, groups, submissions, onEdit, on
                     const stats = getStats(assignment.id);
                     const isOverdue = new Date(assignment.deadline) < new Date();
                     const course = courses.find(c => c.id === assignment.courseId);
-                    const courseGroups = groups.filter(g => g.courseId === assignment.courseId);
 
                     return (
                         <div key={assignment.id} className="bg-white rounded-xl shadow-lg p-6">
@@ -421,7 +415,6 @@ function AssignmentsList({ assignments, courses, groups, submissions, onEdit, on
 interface SummaryViewProps {
     assignments: Assignment[];
     submissions: Submission[];
-    courses: Course[];
     groups: Group[];
     users: User[];
     selectedAssignment: string;
@@ -429,7 +422,7 @@ interface SummaryViewProps {
     onExport: () => void;
 }
 
-function SummaryView({ assignments, submissions, courses, groups, users, selectedAssignment, setSelectedAssignment, onExport }: SummaryViewProps) {
+function SummaryView({ assignments, submissions, groups, users, selectedAssignment, setSelectedAssignment, onExport }: SummaryViewProps) {
     const assignment = assignments.find(a => a.id === selectedAssignment);
     const assignmentSubs = assignment ? submissions.filter(s => s.assignmentId === selectedAssignment) : [];
     const courseGroups = assignment ? groups.filter(g => g.courseId === assignment.courseId) : [];

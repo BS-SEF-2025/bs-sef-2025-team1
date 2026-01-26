@@ -1,7 +1,7 @@
 import { CollectionReference, Firestore } from "firebase-admin/firestore";
-import { Group, CreateGroup, UpdateGroup } from "./schema";
-import { EntityNotFoundError } from "../../utils/errors/client";
-import { isEntityExists } from "../../utils/firestore.utils";
+import { Group, CreateGroup, UpdateGroup } from "./schema.js";
+import { EntityNotFoundError } from "../../utils/errors/client.js";
+import { isEntityExists } from "../../utils/firestore.utils.js";
 
 export const groupCollectionName = "groups";
 

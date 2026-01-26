@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 
 import { StatusCodes } from "http-status-codes";
-import { UserDal } from "./dal";
-import { validatePartialUser, validateUser, User } from "./schema";
+import { UserDal } from "./dal.js";
+import { validatePartialUser, validateUser, User } from "./schema.js";
 
 export const getAllUsersHandler =
   (dal: UserDal) => async (_: Request, res: Response) => {

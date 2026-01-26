@@ -1,7 +1,7 @@
 import { CollectionReference, Firestore } from "firebase-admin/firestore";
-import { EntityNotFoundError } from "../../utils/errors/client";
-import { isEntityExists, convertTimestampsToDates } from "../../utils/firestore.utils";
-import { User, RegisterUser, UserResponse } from "./schema";
+import { EntityNotFoundError } from "../../utils/errors/client.js";
+import { isEntityExists, convertTimestampsToDates } from "../../utils/firestore.utils.js";
+import { User, RegisterUser, UserResponse } from "./schema.js";
 
 export const usersCollectionName = 'users';
 

@@ -1,6 +1,6 @@
 
 
-export type UserRole = 'staff' | 'student';
+export type UserRole = 'admin' | 'staff' | 'student';
 export type FieldType = 'text' | 'scale';
 
 export interface User {

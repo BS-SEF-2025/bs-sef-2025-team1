@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { AssignmentDal } from "./dal";
-import { validateCreateAssignment, validateUpdateAssignment } from "./schema";
+import { AssignmentDal } from "./dal.js";
+import { validateCreateAssignment, validateUpdateAssignment } from "./schema.js";
 
 export const getAllAssignmentsHandler =
   (dal: AssignmentDal) => async (req: Request, res: Response) => {
