@@ -8,7 +8,10 @@ export const getAllUsersHandler =
   (dal: UserDal) => async (_: Request, res: Response) => {
     const users = await dal.getAllUsers();
 
-    res.json(users);
+    res.status(StatusCodes.OK).json({
+      success: true,
+      data: users,
+    });
   };
 
 export const addUserHandler =
@@ -17,7 +20,10 @@ export const addUserHandler =
 
     const newUser = await dal.addUser(userData);
 
-    res.status(StatusCodes.CREATED).json(newUser);
+    res.status(StatusCodes.CREATED).json({
+      success: true,
+      data: newUser,
+    });
   };
 
 export const updateUser =
@@ -36,7 +42,10 @@ export const getUserById =
 
     const user = await dal.getUserById(id);
 
-    res.json(user);
+    res.status(StatusCodes.OK).json({
+      success: true,
+      data: user,
+    });
   };
 
 export const deleteUser = (dal: UserDal) => async (req: Request, res: Response) => {
