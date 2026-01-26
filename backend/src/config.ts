@@ -1,8 +1,8 @@
 import z from "zod";
-import { ServerConfigSchema } from "./services/server";
-import { SystemConfig } from "./services/System";
-import { createValidate } from "./utils/validation";
-import { FirestoreConfigSchema } from "./services/firestore";
+import { ServerConfigSchema } from "./services/server.js";
+import { SystemConfig } from "./services/System.js";
+import { createValidate } from "./utils/validation.js";
+import { FirestoreConfigSchema } from "./services/firestore.js";
 
 export const SystemEnvSchema = z.object({
     ...ServerConfigSchema.shape,
@@ -17,6 +17,7 @@ export const createSystemConfig = (env: NodeJS.ProcessEnv): SystemConfig => {
     return {
         server: {
             PORT: validated.PORT,
+            JWT_SECRET: validated.JWT_SECRET,
         },
         firestore: {
             SERVICE_ACCOUNT_KEY_PATH: validated.SERVICE_ACCOUNT_KEY_PATH,

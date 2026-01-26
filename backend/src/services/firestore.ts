@@ -2,8 +2,8 @@ import admin from "firebase-admin";
 import { Firestore } from "firebase-admin/firestore";
 import { isNil } from "ramda";
 import z from "zod";
-import { ServiceNotInitializedError } from "../utils/errors/types";
-import { RunnableService } from "./types";
+import { ServiceNotInitializedError } from "../utils/errors/types.js";
+import { RunnableService } from "./types.js";
 
 export const FirestoreConfigSchema = z.object({
   SERVICE_ACCOUNT_KEY_PATH: z.string(),

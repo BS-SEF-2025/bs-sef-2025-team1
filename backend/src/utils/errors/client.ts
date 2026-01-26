@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { HttpError } from "./types";
+import { HttpError } from "./types.js";
 
 export class ClientError extends HttpError {
     constructor(message: string, code: StatusCodes = StatusCodes.BAD_REQUEST) {
@@ -20,7 +20,7 @@ export class NotFoundError extends ClientError {
 }
 
 export class EntityNotFoundError extends NotFoundError {
-    constructor(id: string) {
-        super(`entity with id '${id}' not found`);
+    constructor(id: string, entityName = 'entity') {
+        super(`${entityName} with id '${id}' not found`);
     }
 }
