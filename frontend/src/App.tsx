@@ -25,18 +25,18 @@ function App() {
 
                 // Check if user is already authenticated
                 const token = localStorage.getItem('authToken');
+                let authenticatedUser = null;
                 if (token) {
                     try {
-                        const userResponse = await api.getCurrentUser();
-                        setCurrentUser(userResponse);
-                        setLoading(false);
-                        return;
+                        authenticatedUser = await api.getCurrentUser();
+                        setCurrentUser(authenticatedUser);
                     } catch {
                         // Token is invalid, remove it
                         localStorage.removeItem('authToken');
                     }
                 }
 
+                // Always fetch all data regardless of authentication status
                 const [usersData, coursesData, groupsData, assignmentsData, submissionsData] = await Promise.all([
                     api.getUsers(),
                     api.getCourses(),

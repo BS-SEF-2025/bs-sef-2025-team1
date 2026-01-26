@@ -53,52 +53,93 @@ export const api = {
 
     // Users
     getUsers: async () => {
-        const response = await request<{ success: boolean; data: User[] }>('/users');
-        return response.data;
+        const response = await request('/users');
+        // Handle both nested format {success: true, data: users} and direct array format
+        if (response && typeof response === 'object' && 'success' in response && 'data' in response) {
+            return response.data;
+        }
+        // If it's already an array, return it directly
+        if (Array.isArray(response)) {
+            return response;
+        }
+        return [];
     },
 
     // ������
     getCourses: async () => {
-        const response = await request<{ success: boolean; data: Course[] }>('/courses');
-        return response.data;
+        const response = await request('/courses');
+        if (response && typeof response === 'object' && 'success' in response && 'data' in response) {
+            return response.data;
+        }
+        if (Array.isArray(response)) {
+            return response;
+        }
+        return [];
     },
     createCourse: async (course: Partial<Course>) => {
-        const response = await request<{ success: boolean; data: Course }>('/courses', {
+        const response = await request('/courses', {
             method: 'POST',
             body: JSON.stringify(course)
         });
-        return response.data;
+        if (response && typeof response === 'object' && 'success' in response && 'data' in response) {
+            return response.data;
+        }
+        return response;
     },
 
     // �����
     getAssignments: async () => {
-        const response = await request<{ success: boolean; data: Assignment[] }>('/assignments');
-        return response.data;
+        const response = await request('/assignments');
+        if (response && typeof response === 'object' && 'success' in response && 'data' in response) {
+            return response.data;
+        }
+        if (Array.isArray(response)) {
+            return response;
+        }
+        return [];
     },
     createAssignment: async (assignment: Partial<Assignment>) => {
-        const response = await request<{ success: boolean; data: Assignment }>('/assignments', {
+        const response = await request('/assignments', {
             method: 'POST',
             body: JSON.stringify(assignment)
         });
-        return response.data;
+        if (response && typeof response === 'object' && 'success' in response && 'data' in response) {
+            return response.data;
+        }
+        return response;
     },
 
     // �����
     getSubmissions: async () => {
-        const response = await request<{ success: boolean; data: Submission[] }>('/submissions');
-        return response.data;
+        const response = await request('/submissions');
+        if (response && typeof response === 'object' && 'success' in response && 'data' in response) {
+            return response.data;
+        }
+        if (Array.isArray(response)) {
+            return response;
+        }
+        return [];
     },
     submitAssignment: async (submission: Partial<Submission>) => {
-        const response = await request<{ success: boolean; data: Submission }>('/submissions', {
+        const response = await request('/submissions', {
             method: 'POST',
             body: JSON.stringify(submission)
         });
-        return response.data;
+        if (response && typeof response === 'object' && 'success' in response && 'data' in response) {
+            return response.data;
+        }
+        return response;
     },
 
     // ������
     getGroups: async () => {
-        const response = await request<{ success: boolean; data: Group[] }>('/groups');
-        return response.data;
+        const response = await request('/groups');
+        if (response && typeof response === 'object' && 'success' in response && 'data' in response) {
+            return response.data;
+        }
+        if (Array.isArray(response)) {
+            return response;
+        }
+        return [];
     },
 };
