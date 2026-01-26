@@ -38,11 +38,11 @@ function App() {
 
                 // Always fetch all data regardless of authentication status
                 const [usersData, coursesData, groupsData, assignmentsData, submissionsData] = await Promise.all([
-                    api.getUsers(),
-                    api.getCourses(),
-                    api.getGroups(),
-                    api.getAssignments(),
-                    api.getSubmissions()
+                    api.getUsers() as Promise<User[]>,
+                    api.getCourses() as Promise<Course[]>,
+                    api.getGroups() as Promise<Group[]>,
+                    api.getAssignments() as Promise<Assignment[]>,
+                    api.getSubmissions() as Promise<Submission[]>
                 ]);
 
                 setUsers(usersData);
