@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Assignment, Field, Course } from '../types';
-import { Plus, Trash2, Save, X } from 'lucide-react';
+import { Trash2, Save, X } from 'lucide-react';
 
 interface AssignmentFormProps {
     assignment: Assignment | null;

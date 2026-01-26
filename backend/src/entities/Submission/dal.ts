@@ -1,7 +1,7 @@
 import { CollectionReference, Firestore, Query } from "firebase-admin/firestore";
-import { Submission, CreateSubmission, UpdateSubmission, SubmissionQuery } from "./schema";
-import { EntityNotFoundError } from "../../utils/errors/client";
-import { isEntityExists } from "../../utils/firestore.utils";
+import { Submission, CreateSubmission, UpdateSubmission, SubmissionQuery } from "./schema.js";
+import { EntityNotFoundError } from "../../utils/errors/client.js";
+import { isEntityExists } from "../../utils/firestore.utils.js";
 
 export const submissionCollectionName = "submissions";
 

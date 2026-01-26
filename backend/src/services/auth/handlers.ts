@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { AuthService } from "./AuthService";
-import { validateRegisterUser, validateLoginUser } from "../../entities/User/schema";
+import { AuthService } from "./AuthService.js";
+import { validateRegisterUser, validateLoginUser } from "../../entities/User/schema.js";
 
 export const registerHandler = (authService: AuthService) =>
   async (req: Request, res: Response) => {

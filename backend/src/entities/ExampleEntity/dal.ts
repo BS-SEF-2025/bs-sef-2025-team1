@@ -1,6 +1,6 @@
 import { CollectionReference, Firestore } from "firebase-admin/firestore";
-import { ExampleEntity } from "./schema";
-import { EntityNotFoundError } from "../../utils/errors/client";
+import { ExampleEntity } from "./schema.js";
+import { EntityNotFoundError } from "../../utils/errors/client.js";
 
 export const collectionName = 'exampleEntities';
 

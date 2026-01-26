@@ -3,11 +3,11 @@ import {
   deleteCollection,
   insertMany,
   testFirestore,
-} from "../../../services/__tests__/firestore";
-import { EntityNotFoundError } from "../../../utils/errors/client";
-import { addTestPrefix } from "../../../utils/firestore.utils";
-import { courseCollectionName, CourseDal } from "../dal";
-import { courses } from "./mock";
+} from "../../../services/__tests__/firestore.js";
+import { EntityNotFoundError } from "../../../utils/errors/client.js";
+import { addTestPrefix } from "../../../utils/firestore.utils.js";
+import { courseCollectionName, CourseDal } from "../dal.js";
+import { courses } from "./mock.js";
 
 describe("course dal", () => {
   const testCollectionName = addTestPrefix(courseCollectionName);

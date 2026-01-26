@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { httpLogger } from "../../utils/middlewares";
-import { UserDal } from "./dal";
-import * as handlers from './handlers';
+import { httpLogger } from "../../utils/middlewares.js";
+import { UserDal } from "./dal.js";
+import * as handlers from './handlers.js';
 
 export const createUserRouter = (dal: UserDal) => {
     const router = Router();

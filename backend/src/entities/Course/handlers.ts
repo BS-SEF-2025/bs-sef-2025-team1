@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { CourseDal } from "./dal";
-import { validateCreateCourse, validateUpdateCourse } from "./schema";
-import { AuthenticatedRequest } from "../../services/auth/middleware";
+import { CourseDal } from "./dal.js";
+import { validateCreateCourse, validateUpdateCourse } from "./schema.js";
+import { AuthenticatedRequest } from "../../services/auth/middleware.js";
 
 export const getAllCoursesHandler =
   (dal: CourseDal) => async (req: Request, res: Response) => {

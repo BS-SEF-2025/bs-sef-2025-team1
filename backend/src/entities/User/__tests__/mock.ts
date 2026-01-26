@@ -1,4 +1,4 @@
-import { User } from "../schema";
+import { User } from "../schema.js";
 
 export const mockStudent: User = {
   id: "student1",

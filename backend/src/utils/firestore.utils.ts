@@ -6,7 +6,7 @@ import {
   Timestamp,
 } from "firebase-admin/firestore";
 import { isNil } from "ramda";
-import { EntityWithId } from "./types";
+import { EntityWithId } from "./types.js";
 
 export const createInsertMany = (db: Firestore) => {
   return async <T extends EntityWithId<DocumentData>>(

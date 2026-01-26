@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { httpLogger } from "../../utils/middlewares";
-import { CourseDal } from "./dal";
-import * as handlers from './handlers';
-import { createAuthMiddleware, requireStaff } from "../../services/auth/middleware";
+import { httpLogger } from "../../utils/middlewares.js";
+import { CourseDal } from "./dal.js";
+import * as handlers from './handlers.js';
+import { createAuthMiddleware, requireStaff } from "../../services/auth/middleware.js";
 
 export const createCourseRouter = (dal: CourseDal, authService: any) => {
     const router = Router();

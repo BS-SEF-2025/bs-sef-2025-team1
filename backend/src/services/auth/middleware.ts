@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import { AuthService } from '../auth/AuthService';
+import { AuthService } from '../auth/AuthService.js';
 
 export interface AuthenticatedRequest extends Request {
   user: {

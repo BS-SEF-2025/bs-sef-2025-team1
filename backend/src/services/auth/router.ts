@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { httpLogger } from "../../utils/middlewares";
-import { AuthService } from "./AuthService";
-import * as handlers from './handlers';
-import { createAuthMiddleware } from "./middleware";
+import { httpLogger } from "../../utils/middlewares.js";
+import { AuthService } from "./AuthService.js";
+import * as handlers from './handlers.js';
+import { createAuthMiddleware } from "./middleware.js";
 
 export const createAuthRouter = (authService: AuthService) => {
     const router = Router();

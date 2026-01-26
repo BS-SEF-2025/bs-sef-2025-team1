@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { UserDal } from '../../entities/User/dal';
-import { RegisterUser, LoginUser, UserResponse } from '../../entities/User/schema';
+import { UserDal } from '../../entities/User/dal.js';
+import { RegisterUser, LoginUser, UserResponse } from '../../entities/User/schema.js';
 
 export class AuthService {
   constructor(

@@ -1,7 +1,7 @@
 import z from "zod";
-import { createValidate } from "../../utils/validation";
+import { createValidate } from "../../utils/validation.js";
 
-const userRoles = ['staff', 'student'] as const;
+const userRoles = ['admin', 'staff', 'student'] as const;
 export type UserRole = typeof userRoles[number];
 
 export const UserSchema = z.object({

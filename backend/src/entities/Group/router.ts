@@ -1,13 +1,14 @@
 import { Router } from "express";
-import { httpLogger } from "../../utils/middlewares";
-import { GroupDal } from "./dal";
-import * as handlers from './handlers';
-import { createAuthMiddleware, requireStaff } from "../../services/auth/middleware";
+import { httpLogger } from "../../utils/middlewares.js";
+import { GroupDal } from "./dal.js";
+import { CourseDal } from "../Course/dal.js";
+import * as handlers from './handlers.js';
+import { createAuthMiddleware, requireStaff } from "../../services/auth/middleware.js";
 
-export const createGroupRouter = (dal: GroupDal, authService: any) => {
+export const createGroupRouter = (dal: GroupDal, courseDal: CourseDal, authService: any) => {
     const router = Router();
     const authMiddleware = createAuthMiddleware(authService);
-    const decoratedHandlers = createDecoratedGroupHandlers(dal);
+    const decoratedHandlers = createDecoratedGroupHandlers(dal, courseDal);
 
     router.get('/', authMiddleware, decoratedHandlers.getAllGroupsHandler);
     router.get('/:id', authMiddleware, decoratedHandlers.getGroupByIdHandler);
@@ -18,10 +19,10 @@ export const createGroupRouter = (dal: GroupDal, authService: any) => {
     return router;
 }
 
-export const createDecoratedGroupHandlers = (dal: GroupDal) => ({
+export const createDecoratedGroupHandlers = (dal: GroupDal, courseDal: CourseDal) => ({
     getAllGroupsHandler: httpLogger(handlers.getAllGroupsHandler(dal), 'getAllGroupsHandler'),
     getGroupByIdHandler: httpLogger(handlers.getGroupByIdHandler(dal), 'getGroupByIdHandler'),
-    createGroupHandler: httpLogger(handlers.createGroupHandler(dal), 'createGroupHandler'),
-    updateGroupHandler: httpLogger(handlers.updateGroupHandler(dal), 'updateGroupHandler'),
+    createGroupHandler: httpLogger(handlers.createGroupHandler(dal, courseDal), 'createGroupHandler'),
+    updateGroupHandler: httpLogger(handlers.updateGroupHandler(dal, courseDal), 'updateGroupHandler'),
     deleteGroupHandler: httpLogger(handlers.deleteGroupHandler(dal), 'deleteGroupHandler'),
 });

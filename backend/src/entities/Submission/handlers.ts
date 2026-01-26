@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { SubmissionDal } from "./dal";
-import { validateCreateSubmission, validateUpdateSubmission, SubmissionQuery } from "./schema";
+import { SubmissionDal } from "./dal.js";
+import { validateCreateSubmission, validateUpdateSubmission, SubmissionQuery } from "./schema.js";
 
 export const getAllSubmissionsHandler =
   (dal: SubmissionDal) => async (req: Request, res: Response) => {
