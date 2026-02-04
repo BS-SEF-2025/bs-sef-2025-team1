@@ -9,7 +9,7 @@ export const getAllCoursesHandler =
     const user = (req as AuthenticatedRequest).user;
 
     let courses;
-    if (user.role === 'staff') {
+    if (user.role === "STAFF") {
       courses = await dal.getCoursesByCreator(user.id);
     } else {
       courses = await dal.getCoursesByEnrolledStudent(user.id);

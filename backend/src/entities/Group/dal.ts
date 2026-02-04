@@ -6,31 +6,40 @@ import { isEntityExists } from "../../utils/firestore.utils.js";
 export const groupCollectionName = "groups";
 
 export class GroupDal {
-  private collection: CollectionReference<Omit<Group, 'id'>>;
+  private collection: CollectionReference;
 
-  constructor(private db: Firestore, private collectionName: string = groupCollectionName) {
-    this.collection = this.db.collection(this.collectionName) as CollectionReference<Group>;
+  constructor(
+    private db: Firestore,
+    private collectionName: string = groupCollectionName,
+  ) {
+    this.collection = this.db.collection(
+      this.collectionName,
+    ) as CollectionReference<Group>;
   }
 
   getAllGroups = async (): Promise<Group[]> => {
     const res = await this.collection.get();
-    return res.docs.map((doc) => ({
-      ...doc.data(),
-    })) as Group[];
+    return res.docs.map((doc) => {
+      return {
+        ...doc.data(),
+        id: doc.id,
+      };
+    }) as Group[];
   };
 
   getGroupsByCourse = async (courseId: string): Promise<Group[]> => {
-    const query = this.collection.where('courseId', '==', courseId);
+    const query = this.collection.where("courseId", "==", courseId);
     const res = await query.get();
     return res.docs.map((doc) => ({
       ...doc.data(),
+      id: doc.id,
     })) as Group[];
   };
 
   getGroupById = async (id: string): Promise<Group> => {
     const doc = await this.collection.doc(id).get();
     if (!doc.exists) {
-      throw new EntityNotFoundError(id, 'Group');
+      throw new EntityNotFoundError(id, "Group");
     }
     return { id: doc.id, ...doc.data() } as Group;
   };
@@ -38,7 +47,7 @@ export class GroupDal {
   addGroup = async (groupData: CreateGroup): Promise<Group> => {
     const now = new Date();
     const group: Group = {
-      id: '',
+      id: "",
       ...groupData,
       members: groupData.members || [],
       createdAt: now,
@@ -71,7 +80,7 @@ export class GroupDal {
   private assertGroupExists = async (id: string) => {
     const isExists = await isEntityExists(this.db, this.collectionName, id);
     if (!isExists) {
-      throw new EntityNotFoundError(id, 'Group');
+      throw new EntityNotFoundError(id, "Group");
     }
-  }
+  };
 }
