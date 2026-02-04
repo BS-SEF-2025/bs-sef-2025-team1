@@ -1,153 +1,83 @@
-import { useState, useEffect } from 'react';
-import { StaffView } from './components/StaffView';
-import { StudentView } from './components/StudentView';
-import { AdminView } from './components/AdminView';
-import { LoginView } from './components/LoginView';
-import { ClipboardList, LogOut } from 'lucide-react';
-// התיקון החשוב: ייבוא מקובץ הטיפוסים החיצוני
-import type { User, Course, Group, Assignment, Submission } from './types';
-import { api } from './services/api';
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+  type RouteObject,
+} from "react-router-dom";
 
-function App() {
-    const [users, setUsers] = useState<User[]>([]);
-    const [currentUser, setCurrentUser] = useState<User | null>(null);
-    const [courses, setCourses] = useState<Course[]>([]);
-    const [groups, setGroups] = useState<Group[]>([]);
-    const [assignments, setAssignments] = useState<Assignment[]>([]);
-    const [submissions, setSubmissions] = useState<Submission[]>([]);
-    const [loading, setLoading] = useState(true);
+import { Toaster } from "@/components/ui/sonner";
 
-    // Fetch initial data from API
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
+import { AuthProvider } from "@/providers/AuthProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-                // Check if user is already authenticated
-                const token = localStorage.getItem('authToken');
-                let authenticatedUser = null;
-                if (token) {
-                    try {
-                        authenticatedUser = await api.getCurrentUser();
-                        setCurrentUser(authenticatedUser);
-                    } catch {
-                        // Token is invalid, remove it
-                        localStorage.removeItem('authToken');
-                    }
-                }
+const routes: RouteObject[] = [
+  {
+    path: "/login",
+    lazy: () =>
+      import("@/pages/LoginPage").then((module) => ({
+        Component: module.default,
+      })),
+  },
+  {
+    path: "/direct-submit/:assignment",
+    lazy: () =>
+      import("@/pages/DirectSubmitPage").then((module) => ({
+        Component: module.default,
+      })),
+  },
+  {
+    path: "/",
+    lazy: () =>
+      import("@/layouts/AppLayout").then((module) => ({
+        Component: module.default,
+      })),
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/dashboard" replace />,
+      },
+      {
+        path: "dashboard",
+        lazy: () =>
+          import("@/pages/DashboardPage").then((module) => ({
+            Component: module.default,
+          })),
+      },
+      {
+        path: "courses",
+        lazy: () =>
+          import("@/pages/CourseManagementPage").then((module) => ({
+            Component: module.default,
+          })),
+      },
+      {
+        path: "users",
+        lazy: () =>
+          import("@/pages/UserManagementPage").then((module) => ({
+            Component: module.default,
+          })),
+      },
+      {
+        path: "*",
+        element: <div>עמוד לא נמצא</div>,
+      },
+    ],
+  },
+];
 
-                // Always fetch all data regardless of authentication status
-                const [usersData, coursesData, groupsData, assignmentsData, submissionsData] = await Promise.all([
-                    api.getUsers() as Promise<User[]>,
-                    api.getCourses() as Promise<Course[]>,
-                    api.getGroups() as Promise<Group[]>,
-                    api.getAssignments() as Promise<Assignment[]>,
-                    api.getSubmissions() as Promise<Submission[]>
-                ]);
+const queryClient = new QueryClient();
 
-                setUsers(usersData);
-                setCourses(coursesData);
-                setGroups(groupsData);
-                setAssignments(assignmentsData);
-                setSubmissions(submissionsData);
-            } catch (error) {
-                console.error('Failed to fetch data:', error);
-                // For now, keep empty arrays if API fails
-            } finally {
-                setLoading(false);
-            }
-        };
+const App = () => {
+  const router = createBrowserRouter(routes);
 
-        fetchData();
-    }, []);
-
-    const handleLogout = () => {
-        setCurrentUser(null);
-        localStorage.removeItem('authToken');
-    };
-
-    // Show loading state while fetching initial data
-    if (loading) {
-        return (
-            <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50 flex items-center justify-center">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600">טוען נתונים...</p>
-                </div>
-            </div>
-        );
-    }
-
-    if (!currentUser) {
-        return <LoginView onLogin={setCurrentUser} />;
-    }
-
-    return (
-        <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-purple-50 to-pink-50">
-            <header className="bg-gradient-to-l from-indigo-600 to-purple-600 text-white shadow-lg sticky top-0 z-50">
-                <div className="container mx-auto px-6 py-4">
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <ClipboardList size={32} />
-                            <div>
-                                <h1 className="text-2xl">AmiTeam</h1>
-                                <p className="text-sm text-indigo-100">
-                                    {currentUser.role === 'admin' ? 'תצוגת מנהל' :
-                                     currentUser.role === 'staff' ? 'תצוגת סגל' : 'תצוגת סטודנט'}
-                                </p>
-                            </div>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <div className="text-left">
-                                <p className="font-medium">{currentUser.name}</p>
-                                <p className="text-sm text-indigo-100">{currentUser.email}</p>
-                            </div>
-                            <button
-                                onClick={handleLogout}
-                                className="flex items-center gap-2 px-4 py-2 bg-indigo-700 hover:bg-indigo-800 rounded-lg transition-colors"
-                            >
-                                <LogOut size={20} />
-                                <span>התנתק</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </header>
-
-            <main className="container mx-auto px-6 py-8">
-                {currentUser.role === 'admin' ? (
-                    <AdminView
-                        users={users}
-                        setUsers={setUsers}
-                        currentUser={currentUser}
-                    />
-                ) : currentUser.role === 'staff' ? (
-                    <StaffView
-                        assignments={assignments}
-                        setAssignments={setAssignments}
-                        submissions={submissions}
-                        setSubmissions={setSubmissions}
-                        courses={courses}
-                        setCourses={setCourses}
-                        groups={groups}
-                        setGroups={setGroups}
-                        users={users}
-                        currentUser={currentUser}
-                    />
-                ) : (
-                    <StudentView
-                        assignments={assignments}
-                        submissions={submissions}
-                        setSubmissions={setSubmissions}
-                        courses={courses}
-                        groups={groups}
-                        users={users}
-                        currentUser={currentUser}
-                    />
-                )}
-            </main>
-        </div>
-    );
-}
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <RouterProvider router={router} />
+        <Toaster richColors position="top-left" />
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

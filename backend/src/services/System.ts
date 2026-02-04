@@ -1,30 +1,34 @@
 import z from "zod";
 import { Server, ServerConfigSchema } from "./server.js";
 import { StoppableService } from "./types.js";
-import { FirestoreClient, FirestoreConfigSchema } from "./firestore.js";
+import { FirebaseClient, FirebaseConfigSchema } from "./firebase.js";
 
 export const SystemConfigSchema = z.object({
-    server: ServerConfigSchema,
-    firestore: FirestoreConfigSchema,
+  server: ServerConfigSchema,
+  firestore: FirebaseConfigSchema,
 });
 
 export type SystemConfig = z.infer<typeof SystemConfigSchema>;
 
 export class System implements StoppableService {
-    private server?: Server;
-    private firestore: FirestoreClient;
+  private server?: Server;
+  private firebase: FirebaseClient;
 
-    constructor(private config: SystemConfig) {
-        this.firestore = new FirestoreClient(this.config.firestore);
-    }
+  constructor(private config: SystemConfig) {
+    this.firebase = new FirebaseClient(this.config.firestore);
+  }
 
-    start = () => {
-        this.firestore.start();
-        this.server = new Server(this.config.server, this.firestore.getFirebase());
-        this.server.start();
-    };
+  start = () => {
+    this.firebase.start();
+    this.server = new Server(
+      this.config.server,
+      this.firebase.getAuth(),
+      this.firebase.getFirebase(),
+    );
+    this.server.start();
+  };
 
-    stop = () => {
-        this.server?.stop();
-    };
+  stop = () => {
+    this.server?.stop();
+  };
 }
