@@ -1,7 +1,11 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { AssignmentDal } from "./dal.js";
-import { validateCreateAssignment, validateUpdateAssignment } from "./schema.js";
+import {
+  validateCreateAssignment,
+  validateUpdateAssignment,
+} from "./schema.js";
+import { SubmissionDal } from "../Submission/dal.js";
 
 export const getAllAssignmentsHandler =
   (dal: AssignmentDal) => async (req: Request, res: Response) => {
@@ -40,10 +44,13 @@ export const createAssignmentHandler =
   };
 
 export const updateAssignmentHandler =
-  (dal: AssignmentDal) => async (req: Request, res: Response) => {
+  (dal: AssignmentDal, submissionDal: SubmissionDal) =>
+  async (req: Request, res: Response) => {
     const id = req.params.id as string;
     const updates = validateUpdateAssignment(req.body);
     const assignment = await dal.updateAssignment(id, updates);
+
+    await submissionDal.updateSubmissionsScore(assignment);
 
     res.status(StatusCodes.OK).json({
       success: true,
