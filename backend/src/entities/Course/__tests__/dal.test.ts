@@ -3,7 +3,7 @@ import {
   deleteCollection,
   insertMany,
   testFirestore,
-} from "../../../services/__tests__/firestore.js";
+} from "../../../services/__tests__/firebase.js";
 import { EntityNotFoundError } from "../../../utils/errors/client.js";
 import { addTestPrefix } from "../../../utils/firestore.utils.js";
 import { courseCollectionName, CourseDal } from "../dal.js";
@@ -32,14 +32,17 @@ describe("course dal", () => {
 
   describe("addCourse", () => {
     test("adds a course and returns it with an id", async () => {
-      const courseData = { name: 'Test Course', enrolledStudents: ['student1'] };
-      const res = await courseDal.addCourse(courseData, 'staff1');
+      const courseData = {
+        name: "Test Course",
+        enrolledStudents: ["student1"],
+      };
+      const res = await courseDal.addCourse(courseData, "staff1");
 
       expect(res).toEqual({
         id: expect.any(String),
-        name: 'Test Course',
-        enrolledStudents: ['student1'],
-        createdBy: 'staff1',
+        name: "Test Course",
+        enrolledStudents: ["student1"],
+        createdBy: "staff1",
         createdAt: expect.any(Date),
         updatedAt: expect.any(Date),
       });
@@ -48,15 +51,18 @@ describe("course dal", () => {
     });
 
     test("persists the course in the collection", async () => {
-      const courseData = { name: 'Test Course', enrolledStudents: ['student1'] };
-      await courseDal.addCourse(courseData, 'staff1');
+      const courseData = {
+        name: "Test Course",
+        enrolledStudents: ["student1"],
+      };
+      await courseDal.addCourse(courseData, "staff1");
       const allCourses = await courseDal.getAllCourses();
 
       expect(allCourses).toHaveLength(1);
       expect(allCourses[0]).toMatchObject({
-        name: 'Test Course',
-        enrolledStudents: ['student1'],
-        createdBy: 'staff1',
+        name: "Test Course",
+        enrolledStudents: ["student1"],
+        createdBy: "staff1",
       });
 
       await deleteCollection(testCollectionName);
@@ -77,8 +83,10 @@ describe("course dal", () => {
       const newName = "New Course Name";
       await courseDal.updateCourse(targetCourse!.id, { name: newName });
 
-      const updatedCourse = (await courseDal.getAllCourses()).find(c => c.name === newName);
-      
+      const updatedCourse = (await courseDal.getAllCourses()).find(
+        (c) => c.name === newName,
+      );
+
       expect(updatedCourse?.id).toBe(targetCourse?.id);
     });
 
@@ -103,15 +111,17 @@ describe("course dal", () => {
 
       await courseDal.deleteCourse(targetCourse!.id);
 
-      const deletedCourse = (await courseDal.getAllCourses()).find(propEq(targetCourse?.id, 'id'));
-      
+      const deletedCourse = (await courseDal.getAllCourses()).find(
+        propEq(targetCourse?.id, "id"),
+      );
+
       expect(deletedCourse).toBeUndefined();
     });
 
     test("throws if course does not exist", async () => {
-      await expect(
-        courseDal.deleteCourse("nonexistentId"),
-      ).rejects.toThrow(EntityNotFoundError);
+      await expect(courseDal.deleteCourse("nonexistentId")).rejects.toThrow(
+        EntityNotFoundError,
+      );
     });
   });
 });
