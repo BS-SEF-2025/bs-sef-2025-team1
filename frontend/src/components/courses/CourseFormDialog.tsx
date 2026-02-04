@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import StudentCheckbox from "./StudentCheckbox";
+import StudentCheckbox from "@/components/common/StudentCheckbox";
 import useCourseMutations from "@/hooks/api/courses/useCourseMutations";
 
 interface Props {
@@ -67,7 +67,7 @@ const CourseFormDialog = ({ users, course, onClose }: Props) => {
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-2xl rounded-[2.5rem] p-0 overflow-hidden"
+        className="max-w-2xl rounded-[2.5rem] p-0 overflow-hidden select-none"
       >
         <DialogHeader className="p-8 pb-6">
           <div className="flex items-center justify-between gap-4">

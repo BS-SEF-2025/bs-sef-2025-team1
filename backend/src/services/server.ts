@@ -67,11 +67,11 @@ export class Server implements StoppableService {
     );
     this.app.use(
       "/api/assignments",
-      createAssignmentRouter(assignmentDal, authService),
+      createAssignmentRouter(assignmentDal, submissionDal, authService),
     );
     this.app.use(
       "/api/submissions",
-      createSubmissionRouter(submissionDal, authService),
+      createSubmissionRouter(submissionDal, assignmentDal, authService),
     );
     this.app.use(
       "/api/statistics",

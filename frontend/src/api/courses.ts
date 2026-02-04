@@ -14,7 +14,7 @@ export const createCourse = async ({
   studentIds: string[];
 }): Promise<Course> => {
   const { data } = await api.post("/courses", {
-    name,
+    name: name.trim(),
     enrolledStudents: studentIds,
   });
   return data.data as Course;
@@ -30,7 +30,7 @@ export const updateCourse = async ({
   studentIds: string[];
 }): Promise<Course> => {
   const { data } = await api.put(`/courses/${courseId}`, {
-    name,
+    name: name.trim(),
     enrolledStudents: studentIds,
   });
   return data.data as Course;

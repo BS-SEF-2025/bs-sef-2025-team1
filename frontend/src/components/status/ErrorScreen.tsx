@@ -8,7 +8,7 @@ interface Props {
 
 const ErrorScreen = ({ message, onRetry }: Props) => {
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 p-6">
+    <div className="h-full w-full flex items-center justify-center bg-slate-50 p-6">
       <div className="text-center space-y-6 max-w-md">
         <AlertCircle className="w-14 h-14 text-rose-500 mx-auto" />
 
@@ -22,7 +22,7 @@ const ErrorScreen = ({ message, onRetry }: Props) => {
         </div>
 
         {onRetry && (
-          <Button onClick={onRetry} className="rounded-xl">
+          <Button onClick={onRetry} className="rounded-xl cursor-pointer">
             נסה שוב
           </Button>
         )}

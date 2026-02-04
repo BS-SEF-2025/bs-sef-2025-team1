@@ -1,5 +1,5 @@
 import { X } from "lucide-react";
-import type { Course, User } from "@/types";
+import type { User } from "@/types";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -14,30 +14,38 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 interface Props {
-  course: Course | null; // null = closed
+  open: boolean;
+  title: string;
+  subtitle: string;
   onClose: () => void;
   users: User[];
+  studentIds?: string[];
 }
 
-const CourseStudentsDialog = ({ course, onClose, users }: Props) => {
-  const isOpen = Boolean(course);
-
+const StudentsDialog = ({
+  open,
+  title,
+  subtitle,
+  onClose,
+  users,
+  studentIds,
+}: Props) => {
   const getUserById = (id: string) => users.find((u) => u.id === id);
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
       <DialogContent
         showCloseButton={false}
-        className="max-w-lg rounded-[2.5rem] p-0 overflow-hidden"
+        className="max-w-lg rounded-[2.5rem] p-0 overflow-hidden select-none"
       >
         <DialogHeader className="p-8 pb-6">
           <div className="flex items-start justify-between gap-4">
             <div>
               <DialogTitle className="text-xl font-black text-slate-900">
-                סטודנטים רשומים
+                {title}
               </DialogTitle>
               <p className="text-slate-500 text-xs text-start font-bold uppercase tracking-wider mt-1">
-                {course?.name ?? ""}
+                {subtitle}
               </p>
             </div>
 
@@ -56,10 +64,10 @@ const CourseStudentsDialog = ({ course, onClose, users }: Props) => {
         <Separator />
 
         <div className="p-8">
-          {course?.enrolledStudents?.length ? (
+          {studentIds?.length ? (
             <ScrollArea className="max-h-[60vh] pr-2">
               <div dir="rtl" className="space-y-3">
-                {course.enrolledStudents.map((id) => {
+                {studentIds.map((id) => {
                   const s = getUserById(id);
 
                   return (
@@ -75,10 +83,10 @@ const CourseStudentsDialog = ({ course, onClose, users }: Props) => {
                       </div>
 
                       <div className="min-w-0">
-                        <p className="font-bold text-slate-900 truncate">
+                        <p className="font-bold text-slate-900 truncate select-text">
                           {s?.name ?? "משתמש לא נמצא"}
                         </p>
-                        <p className="text-xs text-slate-400 truncate">
+                        <p className="text-xs text-slate-400 truncate select-text">
                           {s?.email ?? ""}
                         </p>
                       </div>
@@ -107,4 +115,4 @@ const CourseStudentsDialog = ({ course, onClose, users }: Props) => {
   );
 };
 
-export default CourseStudentsDialog;
+export default StudentsDialog;

@@ -6,7 +6,7 @@ const ForbiddenScreen = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 p-6">
+    <div className="h-full w-full flex items-center justify-center bg-slate-50 p-6">
       <div className="text-center space-y-6 max-w-md">
         <ShieldAlert className="w-16 h-16 text-rose-500 mx-auto" />
 
@@ -21,7 +21,7 @@ const ForbiddenScreen = () => {
 
         <Button
           variant="outline"
-          className="rounded-xl"
+          className="rounded-xl cursor-pointer"
           onClick={() => navigate("/")}
         >
           חזרה לדף הבית

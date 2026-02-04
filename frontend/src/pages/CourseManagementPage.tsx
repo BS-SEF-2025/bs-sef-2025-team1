@@ -1,10 +1,10 @@
 import { useState } from "react";
-import type { Course } from "@/types";
+import { UserRole, type Course } from "@/types";
 
 import CoursesHeader from "@/components/courses/CoursesHeader";
 import CoursesGrid from "@/components/courses/CoursesGrid";
 import CourseFormDialog from "@/components/courses/CourseFormDialog";
-import CourseStudentsDialog from "@/components/courses/CourseStudentsDialog";
+import StudentsDialog from "@/components/common/StudentsDialog";
 
 import ErrorScreen from "@/components/status/ErrorScreen";
 import ForbiddenScreen from "@/components/status/ForbiddenScreen";
@@ -13,8 +13,11 @@ import UnauthorizedScreen from "@/components/status/UnauthorizedScreen";
 import useCourses from "@/hooks/api/courses/useCourses";
 import { isAxiosError, HttpStatusCode } from "axios";
 import useUsers from "@/hooks/api/users/useUsers";
+import useMe from "@/hooks/api/useMe";
 
 const CourseManagementPage = () => {
+  const { data: user } = useMe();
+
   const {
     data: courses,
     isLoading: coursesLoading,
@@ -30,6 +33,10 @@ const CourseManagementPage = () => {
 
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [viewingCourse, setViewingCourse] = useState<Course | null>(null);
+
+  if (user?.role != UserRole.STAFF) {
+    return <ForbiddenScreen />;
+  }
 
   if (coursesLoading || usersLoading) {
     return <LoadingScreen />;
@@ -67,10 +74,13 @@ const CourseManagementPage = () => {
         users={users!}
       />
 
-      <CourseStudentsDialog
-        course={viewingCourse}
+      <StudentsDialog
+        open={Boolean(viewingCourse)}
+        title="סטודנטים רשומים"
+        subtitle={viewingCourse?.name ?? ""}
         onClose={() => setViewingCourse(null)}
         users={users!}
+        studentIds={viewingCourse?.enrolledStudents}
       />
     </div>
   );

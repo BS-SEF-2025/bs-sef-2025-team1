@@ -62,12 +62,16 @@ const UserRow = ({ user, isSelf }: Props) => {
               updateUserRole(user.id, value as UserRole)
             }
           >
-            <SelectTrigger className="w-40 rounded-xl">
+            <SelectTrigger className="w-40 rounded-xl cursor-pointer">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value={UserRole.STUDENT}>הפוך לסטודנט</SelectItem>
-              <SelectItem value={UserRole.STAFF}>הפוך לסגל</SelectItem>
+              <SelectItem className="cursor-pointer" value={UserRole.STUDENT}>
+                הפוך לסטודנט
+              </SelectItem>
+              <SelectItem className="cursor-pointer" value={UserRole.STAFF}>
+                הפוך לסגל
+              </SelectItem>
             </SelectContent>
           </Select>
 

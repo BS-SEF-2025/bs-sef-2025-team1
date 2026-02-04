@@ -40,11 +40,11 @@ const ViewComponent = () => {
 
 const AppLayout = () => {
   return (
-    <div className="min-h-screen flex bg-slate-50">
+    <div className="h-full flex bg-slate-50 select-none">
       <Sidebar />
 
-      <main className="flex-1 p-6 md:p-10 overflow-x-hidden">
-        <div className="max-w-7xl mx-auto">
+      <main className="flex-1 h-screen p-6 md:p-10 overflow-x-hidden">
+        <div className="max-w-7xl h-full mx-auto">
           <ViewComponent />
         </div>
       </main>
