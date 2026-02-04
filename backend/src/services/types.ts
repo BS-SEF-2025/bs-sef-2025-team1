@@ -1,11 +1,11 @@
-const services = ['server', 'firestore'] as const;
+const services = ["server", "auth", "firestore"] as const;
 
-export type Service = typeof services[number];
+export type Service = (typeof services)[number];
 
 export interface RunnableService {
-    start: () => void | Promise<void>;
+  start: () => void | Promise<void>;
 }
 
 export interface StoppableService extends RunnableService {
-    stop: () => void | Promise<void>;
+  stop: () => void | Promise<void>;
 }

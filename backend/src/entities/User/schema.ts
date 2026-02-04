@@ -1,18 +1,16 @@
 import z from "zod";
 import { createValidate } from "../../utils/validation.js";
 
-const userRoles = ['admin', 'staff', 'student'] as const;
-export type UserRole = typeof userRoles[number];
+const userRoles = ["STAFF", "STUDENT"] as const;
+export type UserRole = (typeof userRoles)[number];
 
 export const UserSchema = z.object({
-    id: z.string(),
-    name: z.string().min(2).max(100),
-    email: z.string().email(),
-    password: z.string().min(6), // hashed
-    role: z.enum(userRoles),
-    groupId: z.string().optional(),
-    createdAt: z.date(),
-    updatedAt: z.date(),
+  id: z.string(),
+  name: z.string().min(2).max(100),
+  email: z.email(),
+  role: z.enum(userRoles),
+  createdAt: z.date(),
+  updatedAt: z.date(),
 });
 
 export const validateUser = createValidate(UserSchema);
@@ -22,23 +20,10 @@ export const PartialUserSchema = UserSchema.partial();
 export const validatePartialUser = createValidate(PartialUserSchema);
 export type PartialUser = z.infer<typeof PartialUserSchema>;
 
-export const RegisterUserSchema = z.object({
-    name: z.string().min(2).max(100),
-    email: z.string().email(),
-    password: z.string().min(6),
-    role: z.enum(userRoles),
-    groupId: z.string().optional(),
+export const AddUserSchema = z.object({
+  name: z.string().min(2).max(100),
+  email: z.email(),
+  role: z.enum(userRoles),
 });
-export const validateRegisterUser = createValidate(RegisterUserSchema);
-export type RegisterUser = z.infer<typeof RegisterUserSchema>;
-
-export const LoginUserSchema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6),
-});
-export const validateLoginUser = createValidate(LoginUserSchema);
-export type LoginUser = z.infer<typeof LoginUserSchema>;
-
-export const UserResponseSchema = UserSchema.omit({ password: true });
-export const validateUserResponse = createValidate(UserResponseSchema);
-export type UserResponse = z.infer<typeof UserResponseSchema>;
+export const validateAddUser = createValidate(AddUserSchema);
+export type AddUser = z.infer<typeof AddUserSchema>;

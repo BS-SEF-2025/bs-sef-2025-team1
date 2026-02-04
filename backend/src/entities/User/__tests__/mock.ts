@@ -4,9 +4,7 @@ export const mockStudent: User = {
   id: "student1",
   name: "John Doe",
   email: "john.doe@example.com",
-  password: "hashedpassword",
-  role: "student",
-  groupId: "group1",
+  role: "STUDENT",
   createdAt: new Date(),
   updatedAt: new Date(),
 };
@@ -15,8 +13,7 @@ export const mockStaff: User = {
   id: "staff1",
   name: "Jane Smith",
   email: "jane.smith@example.com",
-  password: "hashedpassword",
-  role: "staff",
+  role: "STAFF",
   createdAt: new Date(),
   updatedAt: new Date(),
 };
