@@ -9,6 +9,7 @@ import ErrorScreen from "@/components/status/ErrorScreen";
 import { HttpStatusCode, isAxiosError } from "axios";
 import ForbiddenScreen from "@/components/status/ForbiddenScreen";
 import UnauthorizedScreen from "@/components/status/UnauthorizedScreen";
+import { UserRole } from "@/types";
 
 const UserManagementPage = () => {
   const [search, setSearch] = useState("");
@@ -23,6 +24,10 @@ const UserManagementPage = () => {
         u.email.toLowerCase().includes(search.toLowerCase()),
     );
   }, [search, users]);
+
+  if (user?.role != UserRole.STAFF) {
+    return <ForbiddenScreen />;
+  }
 
   if (isLoading) {
     return <LoadingScreen />;

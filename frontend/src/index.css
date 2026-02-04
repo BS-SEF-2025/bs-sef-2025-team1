@@ -121,4 +121,6 @@
     @apply bg-background text-foreground;
     font-family: "Assistant", sans-serif;
   }
+  :root {
+  }
 }

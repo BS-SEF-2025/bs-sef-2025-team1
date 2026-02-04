@@ -1,3 +1,5 @@
+import type { Group } from "./entities";
+
 export const UserRole = {
   STAFF: "STAFF",
   STUDENT: "STUDENT",
@@ -15,3 +17,16 @@ export type DashboardStatKey =
   | "pendingAssignments";
 
 export type DashboardStatsResponse = Record<DashboardStatKey, number>;
+
+export const FieldType = {
+  TEXT: "text",
+  SCALE: "scale",
+} as const;
+
+export type FieldType = (typeof FieldType)[keyof typeof FieldType];
+
+export interface GroupResult {
+  group: Group;
+  avg: number;
+  count: number;
+}

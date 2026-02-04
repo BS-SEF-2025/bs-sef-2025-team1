@@ -7,6 +7,7 @@ import { GroupDal } from "../../entities/Group/dal.js";
 import { User } from "../../entities/User/schema.js";
 import { AuthenticatedRequest } from "../auth/middleware.js";
 import { StaffStatisticsSchema, StudentStatisticsSchema } from "./schema.js";
+import { convertTimestamps } from "../../utils/transformars.js";
 
 export const getStatisticsHandler =
   (
@@ -67,7 +68,7 @@ const getStatisticsForStaff = async (
   return StaffStatisticsSchema.parse({
     coursesAmount: courses.length,
     openAssignmentsAmount: assignments.filter(
-      (a) => new Date(a.deadline) > new Date(),
+      (a) => convertTimestamps(a.deadline) > new Date(),
     ).length,
     submissionAmount: submissionד.length,
   });
@@ -91,7 +92,7 @@ const getStatisticsForStudent = async (
     assignmentsToSubmitAmount: assignments.filter(
       (a) =>
         studentCourses.some((c) => c.id === a.courseId) &&
-        new Date(a.deadline) > new Date(),
+        convertTimestamps(a.deadline) > new Date(),
     ).length,
     submissionsGivenAmount: submissions.filter((s) => s.studentId === user.id)
       .length,

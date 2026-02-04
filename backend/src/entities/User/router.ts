@@ -12,18 +12,8 @@ export const createUserRouter = (dal: UserDal, authService: any) => {
   const authMiddleware = createAuthMiddleware(authService);
   const decoratedHandlers = createDecoratedUserHandlers(dal);
 
-  router.get(
-    "/",
-    authMiddleware,
-    requireStaff,
-    decoratedHandlers.getAllUsersHandler,
-  );
-  router.get(
-    "/:id",
-    authMiddleware,
-    requireStaff,
-    decoratedHandlers.getUserById,
-  );
+  router.get("/", authMiddleware, decoratedHandlers.getAllUsersHandler);
+  router.get("/:id", authMiddleware, decoratedHandlers.getUserById);
   router.put(
     "/:id",
     authMiddleware,

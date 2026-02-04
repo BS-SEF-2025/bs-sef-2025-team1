@@ -6,7 +6,7 @@ const UnauthorizedScreen = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 p-6">
+    <div className="h-full w-full flex items-center justify-center bg-slate-50 p-6">
       <div className="text-center space-y-6 max-w-md">
         <ShieldX className="w-14 h-14 text-amber-500 mx-auto" />
 
@@ -20,7 +20,7 @@ const UnauthorizedScreen = () => {
         <Button
           variant="outline"
           onClick={() => navigate("/")}
-          className="rounded-xl"
+          className="rounded-xl cursor-pointer"
         >
           חזרה לדף הבית
         </Button>
