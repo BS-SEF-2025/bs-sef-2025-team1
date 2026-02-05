@@ -79,9 +79,9 @@ export default function AssignmentCreatePage() {
         e.preventDefault();
         handleSubmit();
       }}
-      className="max-w-7xl space-y-8"
+      className="max-w-7xl space-y-8 pb-4"
     >
-      <AssignmentHeader />
+      <AssignmentHeader mode="edit" />
 
       <AssignmentDetailsCard form={form} courses={courses!} />
 
@@ -97,7 +97,7 @@ export default function AssignmentCreatePage() {
             "shadow-xl shadow-indigo-100 cursor-pointer",
           )}
         >
-          יצירת המשימה
+          שמור
         </Button>
 
         <Button

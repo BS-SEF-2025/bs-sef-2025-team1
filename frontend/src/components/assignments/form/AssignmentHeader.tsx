@@ -4,7 +4,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export default function AssignmentHeader() {
+interface Props {
+  mode: "edit" | "create";
+}
+
+export default function AssignmentHeader({ mode }: Props) {
   const navigate = useNavigate();
 
   return (
@@ -25,7 +29,7 @@ export default function AssignmentHeader() {
 
         <div>
           <h2 className="text-3xl font-black text-slate-900">
-            יצירת משימה חדשה
+            {mode == "create" ? "יצירת משימה חדשה" : "עריכת משימה"}
           </h2>
           <p className="text-slate-500 font-medium">
             הגדרת קריטריונים ופרמטרים לביקורת עמיתים

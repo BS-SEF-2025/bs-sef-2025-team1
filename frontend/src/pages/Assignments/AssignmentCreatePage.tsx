@@ -51,9 +51,9 @@ export default function AssignmentCreatePage() {
         e.preventDefault();
         handleSubmit();
       }}
-      className="max-w-7xl space-y-8"
+      className="max-w-7xl space-y-8 pb-4"
     >
-      <AssignmentHeader />
+      <AssignmentHeader mode="create" />
 
       <AssignmentDetailsCard form={form} courses={courses!} />
 
