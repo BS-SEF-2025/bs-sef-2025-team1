@@ -13,7 +13,15 @@ const ViewComponent = () => {
   const { user, loading } = useAuthState();
   const { isLoading, isError, error } = useMe();
 
-  if (loading || isLoading) {
+  if (loading) {
+    return <LoadingScreen />;
+  }
+
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (isLoading) {
     return <LoadingScreen />;
   }
 
@@ -29,10 +37,6 @@ const ViewComponent = () => {
     }
 
     return <ErrorScreen />;
-  }
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;
