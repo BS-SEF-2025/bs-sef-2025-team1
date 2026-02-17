@@ -1,73 +1,258 @@
-# React + TypeScript + Vite
+# Frontend -- React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+This project is the Frontend application of the system, built using:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19
+- TypeScript
+- Vite
+- React Router
+- TanStack React Query
+- Axios
+- Firebase (Client SDK)
+- TailwindCSS + Radix UI
 
-## React Compiler
+The application provides a full management interface for:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Assignments
+- Courses
+- Groups
+- Submissions
+- Users
+- Statistics Dashboard
+- Authentication (Google Login)
 
-## Expanding the ESLint configuration
+The system communicates with the backend REST API using Axios and
+manages server state using React Query.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+# Main Technologies
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- React 19
+- TypeScript
+- Vite
+- React Router v7
+- TanStack React Query
+- Axios
+- Firebase (for authentication)
+- TailwindCSS
+- Radix UI
+- Sonner (notifications)
+- Lucide React (icons)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+# Project Structure
+
+    src/
+    │
+    ├── api/                → API communication layer (Axios-based)
+    ├── components/         → Reusable UI components grouped by domain
+    ├── contexts/           → React Contexts (e.g., AuthContext)
+    ├── firebase.ts         → Firebase client initialization
+    ├── hooks/              → Custom hooks (API + state logic)
+    ├── layouts/            → Layout components
+    ├── pages/              → Route-based pages
+    ├── providers/          → Application providers (AuthProvider)
+    ├── types/              → TypeScript definitions
+    ├── utils/              → Utility functions
+    ├── App.tsx             → Main app component
+    ├── main.tsx            → Entry point
+    └── index.css           → Global styles
+
+---
+
+# Key Architectural Concepts
+
+## 1. API Layer
+
+All HTTP communication is centralized inside `src/api/` using Axios. An
+Axios instance is configured in:
+
+    src/api/axiosInstance.ts
+
+Each domain has its own API file:
+
+- assignments.ts
+- courses.ts
+- groups.ts
+- submissions.ts
+- users.ts
+- statistics.ts
+- auth.ts
+
+---
+
+## 2. State Management
+
+The project uses **TanStack React Query** for:
+
+- Server state management
+- Caching
+- Background refetching
+- Optimistic updates
+
+Custom hooks are located under:
+
+    src/hooks/api/
+
+Examples:
+
+- useAssignments
+- useCourses
+- useGroups
+- useSubmissions
+- useUsers
+- useStatistics
+
+---
+
+## 3. Authentication
+
+Authentication is handled using:
+
+- Firebase Client SDK
+- AuthContext
+- AuthProvider
+- Protected routes
+
+Relevant files:
+
+    src/contexts/AuthContext.ts
+    src/providers/AuthProvider.tsx
+    src/hooks/contexts/useAuthState.ts
+
+---
+
+## 4. UI Structure
+
+The UI is component-driven and organized by domain:
+
+- assignments/
+- courses/
+- groups/
+- submissions/
+- dashboard/
+- login/
+- results/
+- usermanagement/
+- common/
+- status/
+
+Reusable UI primitives are located in:
+
+    src/components/ui/
+
+These are based on Radix UI + TailwindCSS.
+
+---
+
+# Installation
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+# Running the Project
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Development
+
+```bash
+npm run dev
 ```
+
+The app will run on:
+
+    http://localhost:5173
+
+## Build
+
+```bash
+npm run build
+```
+
+## Preview Production Build
+
+```bash
+npm run preview
+```
+
+---
+
+# Environment Variables
+
+Create a `.env` file in the root:
+
+```env
+VITE_API_BASE_URL=http://localhost:3000
+VITE_FIREBASE_API_KEY=your_key
+VITE_FIREBASE_AUTH_DOMAIN=your_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+---
+
+# Routing
+
+Routing is handled using React Router v7.
+
+Pages are located under:
+
+    src/pages/
+
+Examples:
+
+- DashboardPage
+- LoginPage
+- AssignmentManagementPage
+- CourseManagementPage
+- GroupManagementPage
+- ResultsPage
+- UserManagementPage
+
+---
+
+# Styling
+
+- TailwindCSS v4
+- Utility-first styling
+- Radix UI primitives
+- tw-merge for class merging
+- Sonner for toast notifications
+
+---
+
+# Error Handling
+
+The system includes dedicated screens:
+
+- ErrorScreen
+- UnauthorizedScreen
+- ForbiddenScreen
+- LoadingScreen
+
+Located in:
+
+    src/components/status/
+
+---
+
+# Design Principles
+
+- Component-based architecture
+- Domain-driven UI grouping
+- Centralized API communication
+- Strong typing with TypeScript
+- Separation between server state and UI state
+- Reusable UI primitives
+
+---
+
+# Author
+
+(Add your name here)
