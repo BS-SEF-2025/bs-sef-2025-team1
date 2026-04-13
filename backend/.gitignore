@@ -3,4 +3,4 @@ dist
 .DS_Store
 *.log
 coverage/
-amiteam-64f5a-firebase-adminsdk-fbsvc-3f69e32121.json
+amiteam*.json
